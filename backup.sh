@@ -35,6 +35,16 @@ if [[ "$CURRENT_BRANCH" != "main" ]]; then
     exit 1
 fi
 
+# --- Point git at our credentials file via a path resolved at runtime ---
+# (Avoids absolute paths stored in .git/config, which break across sessions
+#  where the mount prefix differs.)
+CRED_FILE="$SCRIPT_DIR/.git_credentials"
+if [[ ! -f "$CRED_FILE" ]]; then
+    echo "ERROR: credentials file not found at $CRED_FILE" >&2
+    exit 1
+fi
+GIT_CRED_OPT=(-c "credential.helper=store --file=$CRED_FILE")
+
 # --- Stage everything (gitignore excludes credentials and temp files) ---
 git add -A
 
@@ -53,6 +63,6 @@ fi
 git commit -m "$COMMIT_MSG"
 
 # --- Push. Explicitly naming branch on both sides; no force flags anywhere ---
-git push origin main
+git "${GIT_CRED_OPT[@]}" push origin main
 
 echo "backup.sh: pushed successfully."
