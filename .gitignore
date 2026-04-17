@@ -1,0 +1,61 @@
+# --- Credentials & secrets (NEVER commit these) ---
+.smtp_credentials
+.env
+.env.*
+*.key
+*.pem
+credentials.json
+secrets.json
+*_credentials*
+*_secret*
+*.token
+
+# --- Excel / LibreOffice temp & lock files ---
+# Microsoft Excel temp files (created while a file is open)
+~$*.xlsx
+~$*.xlsm
+~$*.xls
+~$*.docx
+~$*.doc
+# LibreOffice / OpenOffice lock files
+.~lock.*#
+# Generic Office temp patterns
+*.tmp
+*.temp
+*.bak
+*.~*
+
+# --- OS metadata ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# --- Editors / IDEs ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- Logs ---
+*.log
+logs/
