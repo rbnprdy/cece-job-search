@@ -67,16 +67,37 @@ Flag these as "Adjacent role — AuD+VA+research background transfers."
 
 Working directory: `/mnt/cece-job-search/`. Contents:
 
-- `jobs.xlsx` — tracker with tabs: `Active`, `Closed`, `Log`.
-- `jobs/` — one markdown file per job, named `{job_id}.md`.
+- `jobs/{job_id}.md` — **source of truth** for active jobs. Each file has a YAML
+  frontmatter block (structured fields) followed by a free-form markdown body
+  (Why / Description / Status history).
+- `jobs/closed/{job_id}.md` — same schema plus `date_closed` and `closure_reason`.
+  Moving a file from `jobs/` to `jobs/closed/` and setting `status: Closed` +
+  `date_closed` + `closure_reason` is how we close a job.
+- `jobs/README.md` — auto-generated index for GitHub browsing. Do not edit.
+- `runs.yml` — append-only log, one entry per run. Drives the Log tab.
+- `jobs.xlsx` — **generated artifact**, rewritten from scratch each run by
+  `regenerate_tracker.py`. Do not edit by hand.
+- `regenerate_tracker.py` — glob markdown + runs.yml, write xlsx and jobs index.
+  Run it after every set of md/yaml edits.
 - `reports/` — one dated markdown report per run, plus `latest.md` mirror.
-- `README.md` — reference for schema and conventions.
-- `send_report.py` — Python script that emails the latest report via SMTP.
-- `.smtp_credentials` — credentials file for send_report.py. May not exist yet; if absent, skip email.
+- `send_report.py` — emails the latest report via SMTP.
+- `.smtp_credentials` — credentials for send_report.py. May not exist yet; if
+  absent, skip email.
 - `backup.sh` — commits and pushes changes to origin/main.
+- `README.md` — schema and conventions reference.
 - `TASK.md` — this file.
 
 Job IDs are `YYMMDD-NNN`. IDs are STABLE — never renumber existing jobs.
+
+### Frontmatter schema
+
+Required keys: `job_id`, `status`, `priority`, `title`, `employer`,
+`employer_type`, `category`, `location`, `loc_tier`, `remote`, `date_found`,
+`last_checked`, `apply_url`, `source`. Optional: `salary`, `date_posted`,
+`deadline`, `research_flag` (bool), `notes`. Closed-only: `date_closed`,
+`closure_reason`. Use quoted strings for `loc_tier` ("1"/"2"/"Other") and dates
+("YYYY-MM-DD") so YAML doesn't coerce them. Do NOT set `details_file` in
+frontmatter — the regenerator derives it from the file path.
 
 ## Pipeline — execute in order
 
@@ -118,20 +139,26 @@ For each candidate:
 For each surviving NEW job:
 
 - Assign next Job ID for today.
-- Create `jobs/{id}.md`.
-- Append row to `Active` tab. Status="New", Date Found=today, Last Checked=today.
+- Create `jobs/{id}.md` with YAML frontmatter (all required fields) + markdown
+  body. `status: New`, `date_found` and `last_checked` set to today.
 - Priority:
   - **High:** Non-clinical (Research/Teaching/Admin) in Tier 1 or Remote, OR adjacent role in Tier 1/Remote that fits.
   - **Medium:** Non-clinical/adjacent in Tier 2; hybrid clinical+research in Tier 1/Remote; clinical-admin matching experience in Tier 1.
   - **Low:** Pure clinical in Tier 1 (surface these — she'll decide); Tier 2 clinical-admin.
-- Research Flag "Y" if research/fellowship/trial/investigator/implementation science mentioned.
-- If the role is in the experience gray zone (requires 4–6 years), add a note to the Notes column: "Stated req: {N} yrs — borderline for Cece's 2–3 post-AuD experience; AuD training years may count, worth inquiring."
+- `research_flag: true` if research/fellowship/trial/investigator/implementation
+  science mentioned.
+- If the role is in the experience gray zone (requires 4–6 years), add a note
+  in the `notes:` field: "Stated req: {N} yrs — borderline for Cece's 2–3
+  post-AuD experience; AuD training years may count, worth inquiring."
 
 ### Pass B: Refresh existing jobs
 
-1. For every Active row, WebFetch the Apply URL. Max 25 per run.
-2. Gone/closed/filled → move to `Closed` tab with Date Closed=today and Reason.
-3. Still live → Last Checked=today; update changed fields and append to status history in `jobs/{id}.md`.
+1. For every `jobs/*.md` file, WebFetch the `apply_url`. Max 25 per run.
+2. Gone/closed/filled → set `status: Closed`, add `date_closed` (today) and
+   `closure_reason`, then **move the file to `jobs/closed/`**. Append a status
+   history bullet in the body.
+3. Still live → update `last_checked: {today}`; update any changed fields
+   (salary, deadline) in frontmatter; append to status history in the body.
 
 ### Pass C: Report
 
@@ -145,8 +172,12 @@ For each surviving NEW job:
    - Closed / Removed
    - Queries and sources covered
    - At bottom: "Full tracker: jobs.xlsx"
-2. Append Log row.
-3. Save `jobs.xlsx`. Recalc: `python /mnt/.claude/skills/xlsx/scripts/recalc.py /mnt/cece-job-search/jobs.xlsx` and verify zero errors. (If that path doesn't exist in the current session, discover it with `find /sessions -path '*/skills/xlsx/scripts/recalc.py' 2>/dev/null | head -1`.)
+2. Append a new entry to `runs.yml` with the run summary (run_date, run_type,
+   new_jobs, updated, closed, total_active, queries_run, notes).
+3. Regenerate: `python regenerate_tracker.py`. This rewrites `jobs.xlsx` and
+   `jobs/README.md` from the md files + runs.yml. Exit 0 = success; any
+   non-zero indicates a frontmatter schema error — fix the offending md file
+   and re-run.
 
 ### Pass D: Email via SMTP script
 
