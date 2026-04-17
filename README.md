@@ -1,6 +1,6 @@
 # Cece's Job Search Tracker
 
-Automated job search for Cece (AuD, ~2–3 yrs post-degree, multi-VA experience, research fellowships). Runs twice weekly (Mon + Thu at 8 am local). Reports emailed from `cece.jobs.bot@gmail.com` to `ruben.purdy@gmail.com` and `ceciliamlacey@gmail.com`.
+Automated job search for Cece (AuD, ~2–3 yrs post-degree, multi-VA experience, research fellowships). Scheduled runs via Claude Cowork. Emails reports out `cece.jobs.bot@gmail.com`.
 
 ## What's in this folder
 
