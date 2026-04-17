@@ -9,6 +9,9 @@ secrets.json
 *_credentials*
 *_secret*
 *.token
+.git_credentials
+.git_token
+.github_token
 
 # --- Excel / LibreOffice temp & lock files ---
 # Microsoft Excel temp files (created while a file is open)
