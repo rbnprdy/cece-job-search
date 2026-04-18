@@ -18,6 +18,7 @@ Exit codes:
   0  success
   1  validation error (missing frontmatter, bad schema, etc.)
 """
+
 from __future__ import annotations
 
 import datetime
@@ -32,7 +33,6 @@ from openpyxl.utils import get_column_letter
 
 ROOT = Path(__file__).parent
 JOBS_DIR = ROOT / "jobs"
-CLOSED_DIR = JOBS_DIR / "closed"
 XLSX_PATH = ROOT / "jobs.xlsx"
 RUNS_YML = ROOT / "runs.yml"
 INDEX_MD = JOBS_DIR / "README.md"
@@ -78,9 +78,20 @@ LOG_COLUMNS: list[tuple[str, str]] = [
 
 # Fields that must be present in every job frontmatter.
 REQUIRED_KEYS = {
-    "job_id", "status", "priority", "title", "employer", "employer_type",
-    "category", "location", "loc_tier", "remote", "date_found", "last_checked",
-    "apply_url", "source",
+    "job_id",
+    "status",
+    "priority",
+    "title",
+    "employer",
+    "employer_type",
+    "category",
+    "location",
+    "loc_tier",
+    "remote",
+    "date_found",
+    "last_checked",
+    "apply_url",
+    "source",
 }
 
 FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
@@ -127,13 +138,6 @@ def load_jobs() -> tuple[list[dict], list[dict]]:
             continue
         _ingest(p, "jobs/")
 
-    # Legacy fallback: pre-refactor, closed jobs were moved to jobs/closed/.
-    # Keep loading from there so historical files still work, but new closures
-    # should NOT be moved here — they just get status=Closed in place.
-    if CLOSED_DIR.exists():
-        for p in sorted(CLOSED_DIR.glob("*.md")):
-            _ingest(p, "jobs/closed/")
-
     active.sort(key=lambda j: str(j["job_id"]))
     closed.sort(key=lambda j: str(j["job_id"]))
     return active, closed
@@ -165,14 +169,35 @@ BODY_FONT = Font(name="Arial", size=10)
 WRAP = Alignment(vertical="top", wrap_text=True)
 
 COLUMN_WIDTHS = {
-    "Job ID": 12, "Status": 10, "Priority": 9, "Title": 38, "Employer": 32,
-    "Employer Type": 18, "Category": 16, "Location": 24, "Loc Tier": 8,
-    "Remote?": 8, "Salary": 24, "Date Posted": 14, "Date Found": 12,
-    "Last Checked": 12, "Deadline": 20, "Apply URL": 40, "Source": 20,
-    "Research Flag": 8, "Notes": 60, "Details File": 24,
-    "Date Closed": 12, "Reason": 50,
-    "Run Date": 12, "Run Type": 12, "New Jobs": 10, "Updated": 10,
-    "Closed": 10, "Total Active": 12, "Queries Run": 12,
+    "Job ID": 12,
+    "Status": 10,
+    "Priority": 9,
+    "Title": 38,
+    "Employer": 32,
+    "Employer Type": 18,
+    "Category": 16,
+    "Location": 24,
+    "Loc Tier": 8,
+    "Remote?": 8,
+    "Salary": 24,
+    "Date Posted": 14,
+    "Date Found": 12,
+    "Last Checked": 12,
+    "Deadline": 20,
+    "Apply URL": 40,
+    "Source": 20,
+    "Research Flag": 8,
+    "Notes": 60,
+    "Details File": 24,
+    "Date Closed": 12,
+    "Reason": 50,
+    "Run Date": 12,
+    "Run Type": 12,
+    "New Jobs": 10,
+    "Updated": 10,
+    "Closed": 10,
+    "Total Active": 12,
+    "Queries Run": 12,
 }
 
 
@@ -208,7 +233,7 @@ def _index_link(job: dict) -> str:
     """
     rel = str(job.get("details_file", f"jobs/{job['job_id']}.md"))
     if rel.startswith("jobs/"):
-        rel = rel[len("jobs/"):]
+        rel = rel[len("jobs/") :]
     return rel
 
 

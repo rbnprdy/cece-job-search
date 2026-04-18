@@ -74,9 +74,6 @@ Working directory: `/mnt/cece-job-search/`. Contents:
   frontmatter. Never move or delete job files — the scheduled runner runs
   unattended and Cowork prompts for confirmation on deletes, which would
   hang the run.
-- `jobs/closed/` — **legacy**. Older closed jobs may still live here and
-  regenerate_tracker.py still reads them, but new closures go in place in
-  `jobs/`.
 - `jobs/README.md` — auto-generated index for GitHub browsing. Do not edit.
 - `runs.yml` — append-only log, one entry per run. Drives the Log tab.
 - `jobs.xlsx` — **generated artifact**, rewritten from scratch each run by

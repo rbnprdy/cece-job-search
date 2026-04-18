@@ -12,12 +12,12 @@ Usage:
 If no date is provided, uses reports/latest.md.
 Exits 0 on success, nonzero on failure.
 """
+
 from __future__ import annotations
 
-import os
-import sys
-import ssl
 import smtplib
+import ssl
+import sys
 from datetime import date
 from email.message import EmailMessage
 from pathlib import Path
@@ -47,7 +47,9 @@ def load_credentials() -> dict:
     required = {"smtp_user", "smtp_password", "recipients"}
     missing = required - creds.keys()
     if missing:
-        sys.stderr.write(f"[send_report] Missing required keys in credentials file: {missing}\n")
+        sys.stderr.write(
+            f"[send_report] Missing required keys in credentials file: {missing}\n"
+        )
         sys.exit(2)
     return creds
 
@@ -65,7 +67,7 @@ def pick_report(arg: str | None) -> Path:
     today_path = REPORTS_DIR / f"{date.today().isoformat()}.md"
     if today_path.exists():
         return today_path
-    sys.stderr.write(f"[send_report] No report found to send.\n")
+    sys.stderr.write("[send_report] No report found to send.\n")
     sys.exit(3)
 
 
@@ -77,9 +79,7 @@ def markdown_to_html(md: str) -> str:
         return markdown.markdown(md, extensions=["extra", "sane_lists"])
     except ImportError:
         # Fall back: wrap in <pre> to preserve formatting without any rendering
-        escaped = (
-            md.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-        )
+        escaped = md.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
         return f"<pre style='font-family: -apple-system, Arial, sans-serif; white-space: pre-wrap;'>{escaped}</pre>"
 
 
@@ -101,7 +101,11 @@ def build_subject(md: str) -> str:
             try:
                 parts = line.split("**")
                 for i, p in enumerate(parts):
-                    if p and p[0].isdigit() and "updated" in " ".join(parts[i : i + 3]).lower():
+                    if (
+                        p
+                        and p[0].isdigit()
+                        and "updated" in " ".join(parts[i : i + 3]).lower()
+                    ):
                         updated_count = p.split()[0]
                         break
             except Exception:
