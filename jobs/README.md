@@ -8,6 +8,21 @@ Click any Job ID, Title, or File link to open the job's markdown file.
 
 | Job ID | Priority | Title | Employer | Location | Deadline | File |
 |---|---|---|---|---|---|---|
+| [260417-001](260417-001.md) | Medium | [Instructor or Assistant Professor — Doctor of Audiology Program](260417-001.md) | MGH Institute of Health Professions | Charlestown / Boston, MA |  | [260417-001.md](260417-001.md) |
+| [260417-002](260417-002.md) | Medium | [Assistant Professor of Audiology (Otolaryngology Head and Neck Surgery)](260417-002.md) | Columbia University Medical Center | Westchester, NY (with occasional NYC travel) |  | [260417-002.md](260417-002.md) |
+| [260417-003](260417-003.md) | Medium | [Audiology Manager](260417-003.md) | Mass General Brigham (Mass Eye and Ear) | Boston, MA |  | [260417-003.md](260417-003.md) |
+| [260417-004](260417-004.md) | Medium | [Staff / Sr. Audiologist](260417-004.md) | UCSF Health | San Francisco, CA |  | [260417-004.md](260417-004.md) |
+| [260417-005](260417-005.md) | Medium | [Remote AL Audiologist](260417-005.md) | Earlens Corporation | Remote (US) |  | [260417-005.md](260417-005.md) |
+| [260417-006](260417-006.md) | Low | [Doctor of Audiology — New York Eye and Ear Infirmary](260417-006.md) | Mount Sinai Health System | New York, NY |  | [260417-006.md](260417-006.md) |
+| [260417-007](260417-007.md) | Low | [Doctor of Audiology — Pediatric Audiology, New York Eye and Ear Infirmary](260417-007.md) | Mount Sinai Health System | New York, NY |  | [260417-007.md](260417-007.md) |
+| [260417-008](260417-008.md) | Low | [Audiologist](260417-008.md) | UCSF Health | San Francisco, CA |  | [260417-008.md](260417-008.md) |
+| [260417-009](260417-009.md) | Low | [Audiologist — Mass Eye and Ear](260417-009.md) | Mass General Brigham | Boston, MA |  | [260417-009.md](260417-009.md) |
+| [260417-010](260417-010.md) | Low | [Audiologist II](260417-010.md) | Boston Children's Hospital | Waltham, MA |  | [260417-010.md](260417-010.md) |
+| [260417-011](260417-011.md) | Low | [Pediatric Audiologist — Flexible Hours (24-40 hrs/week)](260417-011.md) | Tufts Medicine | Boston, MA |  | [260417-011.md](260417-011.md) |
+| [260417-012](260417-012.md) | Low | [Audiologist — Audiology](260417-012.md) | Rady Children's Hospital-San Diego | San Diego, CA |  | [260417-012.md](260417-012.md) |
+| [260417-013](260417-013.md) | Low | [Audiologist](260417-013.md) | Kaiser Permanente | San Diego, CA |  | [260417-013.md](260417-013.md) |
+| [260417-014](260417-014.md) | Low | [Audiologist — Encinitas Clinic](260417-014.md) | Scripps Health | Encinitas, CA (San Diego metro) |  | [260417-014.md](260417-014.md) |
+| [260417-015](260417-015.md) | Low | [Remote Audiologist Dx (CA)](260417-015.md) | Earlens Corporation | Remote (US) |  | [260417-015.md](260417-015.md) |
 
 ## Closed
 
