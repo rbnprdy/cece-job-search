@@ -61,3 +61,21 @@
     HEARCareers withdrawn; Mount Sinai 3024126 replaced; CHOP 410; Hopkins
     HEARCareers withdrawn; VA San Diego deadline passed). Salary refreshes on
     BCH ($83.2k–$133.2k, deadline 5/23) and SFUSD ($69.5k–$131.7k, internal-only).
+
+- run_date: "2026-04-17"
+  run_type: Scheduled
+  new_jobs: 3
+  updated: 10
+  closed: 1
+  total_active: 13
+  queries_run: 15
+  notes: >-
+    Third scheduled run on 2026-04-17. Added 3 new: Columbia Assistant Professor
+    of Audiology in Otolaryngology (NYC/Westchester, High), Mount Sinai West
+    Offsite Audiologist (NYC, Low), UCSD Audiologist Per Diem (San Diego, Low,
+    research-flagged). Closed 1 (Mount Sinai 3033433 — req pulled). Updated 10
+    existing active jobs (all re-verified live; Stanford Audiologist I apply_url
+    updated to specific req R2551913). WebFetch against several employer ATS
+    (Mount Sinai, MGB Workday, Kaiser, NYP) returned 404/empty but employer
+    search indexes confirm postings remain live — held active. Excluded a
+    Staffing Proxy remote audiologist role (TX-license gate).
