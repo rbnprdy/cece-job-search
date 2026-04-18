@@ -11,10 +11,16 @@ has a YAML frontmatter block with structured fields and a free-form markdown
 body. `jobs.xlsx` and `jobs/README.md` are **regenerated** from those files on
 every run; don't edit them by hand.
 
-- `jobs/{job_id}.md` — active jobs
-- `jobs/closed/{job_id}.md` — closed jobs (moved here when closed; retains
-  `date_closed` and `closure_reason` in frontmatter)
-- `jobs/README.md` — auto-generated index table (links to each job file)
+- `jobs/{job_id}.md` — every job, active or closed. Files stay here forever.
+  Active vs Closed is determined by the `status` field in frontmatter, not by
+  directory. To close a job, edit frontmatter in place (set `status: Closed`,
+  add `date_closed` and `closure_reason`) — do not move or delete the file.
+- `jobs/closed/{job_id}.md` — **legacy** directory. Pre-existing closed files
+  here are still read by the regenerator, but new closures go in place in
+  `jobs/`. Avoiding file moves/deletes is required because the scheduled
+  runner is unattended and Cowork prompts for user confirmation on deletes.
+- `jobs/README.md` — auto-generated index table with clickable links to each
+  job's md file (Job ID, Title, and File columns are all links).
 - `runs.yml` — append-only list of runs, one entry per run; drives the Log tab
 - `jobs.xlsx` — generated tracker with tabs `Active`, `Closed`, `Log`
 - `regenerate_tracker.py` — rebuilds `jobs.xlsx` and `jobs/README.md` from the

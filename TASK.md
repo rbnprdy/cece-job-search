@@ -67,12 +67,16 @@ Flag these as "Adjacent role — AuD+VA+research background transfers."
 
 Working directory: `/mnt/cece-job-search/`. Contents:
 
-- `jobs/{job_id}.md` — **source of truth** for active jobs. Each file has a YAML
-  frontmatter block (structured fields) followed by a free-form markdown body
-  (Why / Description / Status history).
-- `jobs/closed/{job_id}.md` — same schema plus `date_closed` and `closure_reason`.
-  Moving a file from `jobs/` to `jobs/closed/` and setting `status: Closed` +
-  `date_closed` + `closure_reason` is how we close a job.
+- `jobs/{job_id}.md` — **source of truth** for every job, active or closed.
+  Each file has a YAML frontmatter block (structured fields) followed by a
+  free-form markdown body (Why / Description / Status history). Closed jobs
+  stay in `jobs/` with `status: Closed` + `date_closed` + `closure_reason` in
+  frontmatter. Never move or delete job files — the scheduled runner runs
+  unattended and Cowork prompts for confirmation on deletes, which would
+  hang the run.
+- `jobs/closed/` — **legacy**. Older closed jobs may still live here and
+  regenerate_tracker.py still reads them, but new closures go in place in
+  `jobs/`.
 - `jobs/README.md` — auto-generated index for GitHub browsing. Do not edit.
 - `runs.yml` — append-only log, one entry per run. Drives the Log tab.
 - `jobs.xlsx` — **generated artifact**, rewritten from scratch each run by
@@ -153,10 +157,14 @@ For each surviving NEW job:
 
 ### Pass B: Refresh existing jobs
 
-1. For every `jobs/*.md` file, WebFetch the `apply_url`. Max 25 per run.
-2. Gone/closed/filled → set `status: Closed`, add `date_closed` (today) and
-   `closure_reason`, then **move the file to `jobs/closed/`**. Append a status
-   history bullet in the body.
+1. For every non-closed `jobs/*.md` file, WebFetch the `apply_url`. Max 25 per
+   run. (Check `status` in frontmatter — skip anything already `Closed`.)
+2. Gone/closed/filled → edit the frontmatter **in place**: set `status: Closed`,
+   add `date_closed` (today) and `closure_reason`. Append a status history
+   bullet in the body. **Do NOT move or delete the file.** Every job stays in
+   `jobs/` forever; regenerate_tracker.py routes Active vs Closed purely by
+   the `status` field. (Cowork prompts for user confirmation on file deletes,
+   which would hang the unattended scheduled run.)
 3. Still live → update `last_checked: {today}`; update any changed fields
    (salary, deadline) in frontmatter; append to status history in the body.
 
